@@ -1,0 +1,22 @@
+{
+  "name": "vaadin-development-mode-detector-test",
+  "homepage": "https://github.com/vaadin/vaadin-development-mode-detector/test",
+  "private": true,
+  "authors": [
+    "Artur Signell <artur@vaadin.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "Apache2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "^1.0.17",
+    "polymer": "^2.2.0"
+  }
+}
