@@ -28,13 +28,22 @@ if (!window.Vaadin) {
 }
 if (typeof window.Vaadin.developmentMode === "undefined") {
   window.Vaadin.developmentMode = isLocalhost() && isUnbundled();
-  window.Vaadin.importIfDevelopmentMode = function(url) {
+  window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
+    // Imports a HTML file named "id"/id".html and
+    // triggers a callback defined in window.Vaadin.developmentModeCallback (if present)
+    // with the given (optional) argument
     if (!window.Vaadin.developmentMode) {
       return;
     }
+
     var path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
-    path = path+"../"+url;
-    return Polymer.importHref(path);
+    path = path + "../" + id + "/" + id + ".html";
+    return Polymer.importHref(path, function() {
+      const callback = window.Vaadin.developmentModeCallback[id];
+      if (callback) {
+        callback(optionalArgument);
+      }
+    });
   }
 }
 </script>
