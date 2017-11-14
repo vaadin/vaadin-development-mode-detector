@@ -1,6 +1,4 @@
-# \<vaadin-development-mode-detector\>
-
-Element for detecting that an application using Vaadin Elements is running in devlopment mode
+Utility method for detecting that an application using Vaadin Elements is running in development mode
 
 ## Running Tests
 
