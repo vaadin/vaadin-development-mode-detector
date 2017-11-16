@@ -49,7 +49,7 @@ if (typeof window.Vaadin.developmentMode === "undefined") {
       return;
     }
 
-    if (HTMLImports) {
+    if (window.HTMLImports) {
       HTMLImports.whenReady(function() {
         importAndRun(id, optionalArgument);
       });
