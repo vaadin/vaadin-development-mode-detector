@@ -28,14 +28,8 @@ if (!window.Vaadin) {
 }
 if (typeof window.Vaadin.developmentMode === "undefined") {
   window.Vaadin.developmentMode = isLocalhost() && isUnbundled();
-  window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
-    // Imports a HTML file named "id"/id".html and
-    // triggers a callback defined in window.Vaadin.developmentModeCallback (if present)
-    // with the given (optional) argument
-    if (!window.Vaadin.developmentMode) {
-      return;
-    }
 
+  const importAndRun = function(id, optionalArgument) {
     var path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
     path = path + "../" + id + "/" + id + ".html";
     return Polymer.importHref(path, function() {
@@ -44,6 +38,22 @@ if (typeof window.Vaadin.developmentMode === "undefined") {
         callback(optionalArgument);
       }
     });
+  }
+  window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
+    // Imports a HTML file named "id"/id".html and
+    // triggers a callback defined in window.Vaadin.developmentModeCallback (if present)
+    // with the given (optional) argument
+    if (!window.Vaadin.developmentMode) {
+      return;
+    }
+
+    if (HTMLImports) {
+      HTMLImports.whenReady(function() {
+        importAndRun(id, optionalArgument);
+      });
+    } else {
+      importAndRun(id, optionalArgument);
+    }
   }
 }
 </script>
