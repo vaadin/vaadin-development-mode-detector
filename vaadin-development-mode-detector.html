@@ -5,11 +5,13 @@
 function isLocalhost() {
   return (["localhost","127.0.0.1"].indexOf(window.location.hostname) >= 0);
 }
-
+function endsWith(string, ending) {
+  return string.lastIndexOf(ending) == string.length-ending.length;
+}
 function getHtmlImports(scope, htmlImports) {
   const imports = [...scope.querySelectorAll("link[rel=import]")];
-  imports.forEach(link => {
-    if (!htmlImports.includes(link.href)) {
+  imports.forEach(function(link) {
+    if (htmlImports.indexOf(link.href) == -1) {
       htmlImports.push(link.href);
       this.getHtmlImports(link.import, htmlImports)
     }
@@ -20,7 +22,7 @@ function getHtmlImports(scope, htmlImports) {
 function isUnbundled() {
   // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
   const htmlImports = this.getHtmlImports(document, []);
-  return htmlImports.filter(href=>href.endsWith("polymer/polymer.html")).length > 0;
+  return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer.html")}).length > 0;
 }
 
 if (!window.Vaadin) {
