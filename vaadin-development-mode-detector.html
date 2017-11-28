@@ -35,9 +35,11 @@ if (typeof window.Vaadin.developmentMode === "undefined") {
     var path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
     path = path + "../" + id + "/" + id + ".html";
     return Polymer.importHref(path, function() {
-      const callback = window.Vaadin.developmentModeCallback[id];
-      if (callback) {
-        callback(optionalArgument);
+      if (window.Vaadin && window.Vaadin.developmentModeCallback) {
+        const callback = window.Vaadin.developmentModeCallback[id];
+        if (callback) {
+          callback(optionalArgument);
+        }
       }
     });
   }
