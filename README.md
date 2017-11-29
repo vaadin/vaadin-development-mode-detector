@@ -18,6 +18,6 @@ To verify functionality:
 1. Open http://localhost:8080/test/build/default/index.html
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
-1. Open http://<yourip>:8080/test/build/default/index.html
+1. Open http://`<yourip>`:8080/test/build/default/index.html
     1. Verify that `mode` is `production` (orange)
     1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
