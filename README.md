@@ -11,7 +11,7 @@ To verify functionality:
 1. Open http://localhost:8080/test/index.html
   1. Verify that `mode` is `development` (green)
   1. Verify that `importIfDevelopmentMode` is `imported` (green)
-1. Open http://<yourip>:8080/test/index.html
+1. Open http://`<yourip>`:8080/test/index.html
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
 1. Run `cd test/bower_components && ln -s ../../vaadin-development-mode-detector.html && cd .. && polymer build --bundle`
