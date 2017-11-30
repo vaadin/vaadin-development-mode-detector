@@ -2,6 +2,9 @@
 </dom-module>
 
 <script>
+function isForcedDevelopmentMode() {
+  return localStorage.getItem("vaadin.developmentmode.force");
+}
 function isLocalhost() {
   return (["localhost","127.0.0.1"].indexOf(window.location.hostname) >= 0);
 }
@@ -29,7 +32,7 @@ if (!window.Vaadin) {
   window.Vaadin = {};
 }
 if (typeof window.Vaadin.developmentMode === "undefined") {
-  window.Vaadin.developmentMode = isLocalhost() && isUnbundled();
+  window.Vaadin.developmentMode = isForcedDevelopmentMode() || (isLocalhost() && isUnbundled());
 
   const importAndRun = function(id, optionalArgument) {
     var path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
