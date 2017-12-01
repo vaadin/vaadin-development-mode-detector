@@ -12,13 +12,15 @@ function endsWith(string, ending) {
   return string.lastIndexOf(ending) == string.length-ending.length;
 }
 function getHtmlImports(scope, htmlImports) {
-  const imports = [...scope.querySelectorAll("link[rel=import]")];
-  imports.forEach(function(link) {
-    if (htmlImports.indexOf(link.href) == -1) {
-      htmlImports.push(link.href);
-      this.getHtmlImports(link.import, htmlImports)
-    }
-  });
+  if (scope) {
+    const imports = [...scope.querySelectorAll("link[rel=import]")];
+    imports.forEach(function(link) {
+      if (htmlImports.indexOf(link.href) == -1) {
+        htmlImports.push(link.href);
+        this.getHtmlImports(link.import, htmlImports)
+      }
+    });
+  }
   return htmlImports;
 }
 
