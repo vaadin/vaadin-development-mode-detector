@@ -25,7 +25,7 @@ function getHtmlImports(scope, htmlImports) {
 function isUnbundled() {
   // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
   const htmlImports = this.getHtmlImports(document, []);
-  return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer.html")}).length > 0;
+  return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
 }
 
 if (!window.Vaadin) {
