@@ -29,12 +29,23 @@ function isUnbundled() {
   const htmlImports = this.getHtmlImports(document, []);
   return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
 }
+function isFlowProductionMode() {
+  if (window.vaadin && window.vaadin.clients) {
+    const productionModeApps = Object.keys(window.vaadin.clients)
+    .map(key => window.vaadin.clients[key])
+    .filter(client => client.productionMode);
+    if (productionModeApps.length > 0) {
+      return true;
+    }
+  }
+  return false;
+}
 
 if (!window.Vaadin) {
   window.Vaadin = {};
 }
 if (typeof window.Vaadin.developmentMode === "undefined") {
-  window.Vaadin.developmentMode = isForcedDevelopmentMode() || (isLocalhost() && isUnbundled());
+  window.Vaadin.developmentMode = isForcedDevelopmentMode() || (isLocalhost() && isUnbundled() && !isFlowProductionMode());
 
   const importAndRun = function(id, optionalArgument) {
     var path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
