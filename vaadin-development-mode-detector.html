@@ -59,7 +59,7 @@ if (typeof window.Vaadin.developmentMode === "undefined") {
           callback(optionalArgument);
         }
       }
-    });
+    }, function() {}, true);
   }
   window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
     // Imports a HTML file named "id"/id".html and
