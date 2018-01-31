@@ -24,8 +24,14 @@
       }
       whenReady = function() {
         log("mode",window.Vaadin.developmentMode,"development","production");
-        const linkTag = window.Vaadin.importIfDevelopmentMode("some-non-existing-file");
-        log("importIfDevelopmentMode", linkTag, "imported", "ignored");
+        var oldImport = Polymer.importHref;
+        var importCalled = false;
+        Polymer.importHref = function(href, onload, onerror, optAsync) {
+          importCalled = true;
+        }
+        window.Vaadin.runIfDevelopmentMode("some-non-existing-file");
+        Polymer.importHref = oldImport;
+        log("runIfDevelopmentMode", importCalled, "imported", "ignored");
       };
 
       if (HTMLImports.ready) {
