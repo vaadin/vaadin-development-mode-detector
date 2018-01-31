@@ -32,9 +32,9 @@ function isUnbundled() {
   return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
 }
 function isFlowProductionMode() {
-  if (window.vaadin && window.vaadin.clients) {
-    const productionModeApps = Object.keys(window.vaadin.clients)
-    .map(key => window.vaadin.clients[key])
+  if (window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.clients) {
+    const productionModeApps = Object.keys(window.Vaadin.Flow.clients)
+    .map(key => window.Vaadin.Flow.clients[key])
     .filter(client => client.productionMode);
     if (productionModeApps.length > 0) {
       return true;
