@@ -45,7 +45,7 @@
   }
 
   if (!window.Vaadin) {
-    window.Vaadin = {};
+    window['Vaadin'] = {};
   }
   if (typeof window.Vaadin.developmentMode === "undefined") {
     try {
