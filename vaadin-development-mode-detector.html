@@ -1,10 +1,15 @@
 <link rel="import" href="../polymer/lib/utils/import-href.html">
+<link rel="import" href="../polymer/lib/elements/dom-module.html">
 
 <dom-module id="vaadin-development-mode-probe">
 </dom-module>
 
 <script>
 (function(){
+  const version = window['Polymer'] && window['Polymer'].version;
+
+  const useHtmlImports = version && version.indexOf('2') === 0;
+
   function isForcedDevelopmentMode() {
     return localStorage.getItem("vaadin.developmentmode.force");
   }
@@ -27,11 +32,27 @@
     return htmlImports;
   }
 
-  function isUnbundled() {
-    // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
-    const htmlImports = getHtmlImports(document, []);
-    return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
+  function getEsModules() {
+    // native ES modules
+    const modules = document.querySelectorAll("script[type=module]");
+
+    // require.js modules
+    const require = document.querySelectorAll("script[data-requiremodule]");
+
+    return Array.from(modules).concat(Array.from(require));
   }
+
+  function isUnbundled() {
+    if (useHtmlImports) {
+      // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
+      const htmlImports = getHtmlImports(document, []);
+      return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
+    } else {
+      const modules = getEsModules();
+      return modules.filter(function (m) { return m.src.indexOf("vaadin-") > -1 }).length > 0;
+    }
+  }
+
   function isFlowProductionMode() {
     if (window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.clients) {
       const productionModeApps = Object.keys(window.Vaadin.Flow.clients)
@@ -55,9 +76,13 @@
       window.Vaadin.developmentMode = false;
     }
 
-    const importAndRun = function(id, optionalArgument) {
+    const preparePath = function (id, extension) {
       let path = Polymer.DomModule.import("vaadin-development-mode-probe").assetpath;
-      path = path + "../" + id + "/" + id + ".html";
+      return path + "../" + id + "/" + id + extension;
+    }
+
+    const importAndRun = function(id, optionalArgument) {
+      let path = preparePath(id, ".html");
       return Polymer.importHref(path, function() {
         if (window.Vaadin && window.Vaadin.developmentModeCallback) {
           const callback = window.Vaadin.developmentModeCallback[id];
@@ -67,6 +92,23 @@
         }
       }, function() {}, true);
     }
+
+    const loadAndRun = function(id, optionalArgument) {
+      let path = preparePath(id, ".js");
+      let src = document.createElement("script");
+      src.setAttribute("src", path);
+      src.async = true;
+      src.onreadystatechange = src.onload = function() {
+        if (window.Vaadin && window.Vaadin.developmentModeCallback) {
+          const callback = window.Vaadin.developmentModeCallback[id];
+          if (callback) {
+            callback(optionalArgument);
+          }
+        }
+      }
+      document.body.appendChild(src);
+    }
+
     window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
       // Imports a HTML file named "id"/id".html and
       // triggers a callback defined in window.Vaadin.developmentModeCallback (if present)
@@ -75,12 +117,14 @@
         return;
       }
 
-      if (window.HTMLImports) {
+      if (window.HTMLImports && useHtmlImports) {
         HTMLImports.whenReady(function() {
           importAndRun(id, optionalArgument);
         });
-      } else {
+      } else if (useHtmlImports) {
         importAndRun(id, optionalArgument);
+      } else {
+        loadAndRun(id, optionalArgument);
       }
     }
   }
