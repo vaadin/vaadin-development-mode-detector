@@ -1,0 +1,5 @@
+{
+  "name": "@vaadin/vaadin-development-mode-detector",
+  "version": "1.0.3",
+  "description": "Element for detecting that an application using Vaadin Elements is running in development mode"
+}
