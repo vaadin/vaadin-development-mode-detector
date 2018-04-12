@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="../vaadin-development-mode-detector.html">
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../bower_components/vaadin-development-mode-detector/vaadin-development-mode-detector.html">
     <style>
     .yes {
       font-weight: bold;
@@ -17,28 +16,29 @@
     }
     </style>
     <script>
-      log = function(msg, state, iftrue, iffalse) {
-        const cls = state ? "yes":"no";
-        const txt = msg + ": <b class='"+cls+"'>"+(state?iftrue:iffalse)+"</b><br><br>";
+      const log = function(msg, state, iftrue, iffalse) {
+        const cls = state ? 'yes' : 'no';
+        const txt = `${msg}: <b class="${cls}">${state ? iftrue : iffalse}</b><br><br>`;
         window.text.innerHTML += txt;
       }
-      whenReady = function() {
-        log("mode",window.Vaadin.developmentMode,"development","production");
-        var oldImport = Polymer.importHref;
-        var importCalled = false;
-        Polymer.importHref = function(href, onload, onerror, optAsync) {
-          importCalled = true;
-        }
-        window.Vaadin.runIfDevelopmentMode("some-non-existing-file");
-        Polymer.importHref = oldImport;
-        log("runIfDevelopmentMode", importCalled, "imported", "ignored");
-      };
 
-      if (HTMLImports.ready) {
-        whenReady();
-      } else {
-        HTMLImports.whenReady(whenReady);
-      }
+      window.addEventListener('WebComponentsReady', function() {
+        log("mode", window.Vaadin.developmentMode, "development", "production");
+        var importCalled = false;
+
+        var detector = customElements.get('vaadin-development-mode-detector').instance;
+        var origImportAndRun = detector.importAndRun;
+        var origLoadAndRun = detector.loadAndRun;
+        detector.importAndRun = () => importCalled = true;
+        detector.loadAndRun = () => importCalled = true;
+
+        window.Vaadin.runIfDevelopmentMode("some-non-existing-file");
+
+        detector.importAndRun = origImportAndRun;
+        detector.loadAndRun = origLoadAndRun;
+
+        log("runIfDevelopmentMode", importCalled, "imported", "ignored");
+      });
     </script>
   </head>
   <body>
