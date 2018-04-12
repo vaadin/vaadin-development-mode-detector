@@ -13,18 +13,19 @@ There are no automatic tests as the functionality depends on the host the code i
 
 To verify functionality:
 1. Run `bower install`
-1. Run `cd test && bower install ; cd ..`
+1. Run `mkdir bower_components/vaadin-development-mode-detector`
+1. Run `cp vaadin-development-mode-detector.html bower_components/vaadin-development-mode-detector/vaadin-development-mode-detector.html`
 1. Run `polyserve -H 0.0.0.0`
-1. Open http://localhost:8080/test/index.html
+1. Open http://localhost:8081/components/vaadin-development-mode-detector/test/
   1. Verify that `mode` is `development` (green)
   1. Verify that `importIfDevelopmentMode` is `imported` (green)
-1. Open http://`<yourip>`:8080/test/index.html
+1. Open http://`<yourip>`:8081/components/vaadin-development-mode-detector/test/
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
-1. Run `cd test/bower_components && ln -s ../../vaadin-development-mode-detector.html && cd .. && polymer build --bundle`
-1. Open http://localhost:8080/test/build/default/index.html
+1. Run `polymer build --entrypoint test/index.html --bundle`
+1. Open http://localhost:8081/build/default/test/
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
-1. Open http://`<yourip>`:8080/test/build/default/index.html
+1. Open http://`<yourip>`:8081/build/default/test/
     1. Verify that `mode` is `production` (orange)
     1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
