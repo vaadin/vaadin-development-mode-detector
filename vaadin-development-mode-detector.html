@@ -29,14 +29,6 @@
         return htmlImports;
       }
 
-      function getEsModules() {
-        // native ES modules
-        const modules = document.querySelectorAll("script[type=module]");
-        // require.js modules
-        const require = document.querySelectorAll("script[data-requiremodule]");
-        return Array.from(modules).concat(Array.from(require));
-      }
-
       class DevelopmentModeDetector extends Polymer.Element {
         static get is() {
           return "vaadin-development-mode-detector";
@@ -56,8 +48,8 @@
             const htmlImports = getHtmlImports(document, []);
             return htmlImports.filter(href => endsWith(href, "polymer/polymer-element.html")).length > 0;
           } else {
-            const modules = getEsModules();
-            return modules.filter(m => m.src.indexOf("@vaadin/vaadin-") > -1).length > 0;
+            // FIXME(web-padawan): check if that works with polymer-cli
+            return endsWith(this.importPath, `${this.is}.js`);
           }
         }
 
