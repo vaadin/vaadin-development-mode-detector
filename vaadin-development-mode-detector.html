@@ -49,7 +49,7 @@
             return htmlImports.filter(href => endsWith(href, "polymer/polymer-element.html")).length > 0;
           } else {
             // FIXME(web-padawan): check if that works with polymer-cli
-            return endsWith(this.importPath, `${this.is}.js`);
+            return endsWith(this.importPath, `${this.constructor.is}.js`);
           }
         }
 
