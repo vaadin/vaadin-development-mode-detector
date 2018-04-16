@@ -1,12 +1,13 @@
 const puppeteer = require('puppeteer');
 const exec = require('child_process').exec;
+const testFile = 'test.html';
 
 jest.setTimeout(10000);
 
 function polymerBuild() {
   return new Promise((resolve, reject) => {
     exec(
-      'polymer build --entrypoint test/index.html --bundle',
+      `polymer build --entrypoint ${testFile} --bundle`,
       {},
       (error, stdout, stderr) => {
         if (error) {
@@ -44,7 +45,7 @@ describe('bundled mode', () => {
   });
 
   it('should detect the production mode', async() => {
-    await page.goto(`${polymerServeUrl}/test/`);
+    await page.goto(`${polymerServeUrl}/${testFile}`);
     await page.waitForSelector('b');
     const text = await page.$eval('b', el => el.textContent);
     expect(text).toEqual('production');
