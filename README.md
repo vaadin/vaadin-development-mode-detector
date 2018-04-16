@@ -20,7 +20,7 @@ To execute the test steps manually for Polymer 2:
 1. Open http://`<yourip>`:8081/components/vaadin-development-mode-detector/test.html
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
-1. Run `polymer build --entrypoint test/index.html --bundle`
+1. Run `polymer build --entrypoint test.html --bundle`
 1. Open http://localhost:8081/build/default/test.html
   1. Verify that `mode` is `production` (orange)
   1. Verify that `importIfDevelopmentMode` is `ignored` (orange)
