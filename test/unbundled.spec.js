@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const exec = require('child_process').exec;
+const testFile = 'test.html';
 
 describe('unbundled mode', () => {
   let browser;
@@ -26,7 +27,7 @@ describe('unbundled mode', () => {
 
 
   it('should detect the development mode', async() => {
-    await page.goto(`${polymerServeUrl}test/`);
+    await page.goto(`${polymerServeUrl}${testFile}`);
     await page.waitForSelector('b');
     const text = await page.$eval('b', el => el.textContent);
     expect(text).toEqual('development');
