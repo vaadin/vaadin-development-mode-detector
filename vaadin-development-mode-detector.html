@@ -109,12 +109,12 @@
 
     const loadAndRun = function(id, optionalArgument) {
       let path = prepareJsPath(id);
-      let script = document.body.querySelector("script[src='" + path + "'][async]");
+      let script = document.body.querySelector("script[src='" + path + "'][type='module']");
 
       if (!script) {
         script = document.createElement("script");
         script.setAttribute("src", path);
-        script.async = true;
+        script.type = 'module';
 
         script.onreadystatechange = script.onload = function() {
           script.__dynamicImportLoaded = true;
