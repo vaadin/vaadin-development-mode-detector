@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <link rel="import" href="./bower_components/vaadin-development-mode-detector/vaadin-development-mode-detector.html">
+    <style>
+    .yes {
+      font-weight: bold;
+      color: green;
+    }
+    .no {
+      font-weight: bold;
+      color: orange;
+    }
+    </style>
+  </head>
+  <body>
+    <p id="text">
+    </p>
+    <script>
+      const log = function(msg, state, iftrue, iffalse) {
+        const cls = state ? 'yes' : 'no';
+        const txt = `${msg}: <b class="${cls}">${state ? iftrue : iffalse}</b><br><br>`;
+        window.text.innerHTML += txt;
+      }
+
+      const detector = 'vaadin-development-mode-detector';
+
+      customElements.whenDefined(detector).then(() => {
+        log("mode", window.Vaadin.developmentMode, "development", "production");
+        var importCalled = false;
+
+        var instance = customElements.get(detector).instance;
+        var origImportAndRun = instance.importAndRun;
+        var origLoadAndRun = instance.loadAndRun;
+        instance.importAndRun = () => importCalled = true;
+        instance.loadAndRun = () => importCalled = true;
+
+        window.Vaadin.runIfDevelopmentMode("some-non-existing-file");
+
+        instance.importAndRun = origImportAndRun;
+        instance.loadAndRun = origLoadAndRun;
+
+        log("runIfDevelopmentMode", importCalled, "imported", "ignored");
+      });
+    </script>
+  </body>
+</html>

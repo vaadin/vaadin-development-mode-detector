@@ -4,5 +4,13 @@
   "description": "Element for detecting that an application using Vaadin Elements is running in development mode",
   "repository": "vaadin/vaadin-development-mode-detector",
   "author": "Vaadin Ltd",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "jest": "^22.4.2",
+    "puppeteer": "^1.1.0"
+  },
+  "scripts": {
+    "pretest": "node pretest.js",
+    "test": "jest --forceExit"
+  }
 }
