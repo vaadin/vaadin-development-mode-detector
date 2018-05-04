@@ -32,24 +32,17 @@
     return htmlImports;
   }
 
-  function getEsModules() {
-    // native ES modules
-    const modules = document.querySelectorAll("script[type=module]");
-
-    // require.js modules
-    const require = document.querySelectorAll("script[data-requiremodule]");
-
-    return Array.from(modules).concat(Array.from(require));
-  }
-
   function isUnbundled() {
     if (useHtmlImports) {
       // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
       const htmlImports = getHtmlImports(document, []);
       return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
     } else {
-      const modules = getEsModules();
-      return modules.filter(function (m) { return m.src.indexOf("vaadin-") > -1 }).length > 0;
+      const scripts = Array.from(document.querySelectorAll("script"));
+      // TODO(web-padawan): this is not expected to work for applications using native ES modules,
+      // since the index.html is unlikely to contain any direct imports of Vaadin components.
+      // It works with the AMD transform of CLI, as the <script> tags are being added to <head>.
+      return scripts.filter(script => script.src.indexOf("@vaadin") > -1).length > 0;
     }
   }
 
