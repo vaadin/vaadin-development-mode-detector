@@ -1,5 +1,12 @@
 Utility method for detecting that an application using Vaadin Elements is running in development mode
 
+### Polymer 3 publishing
+
+1. Run `magi p3-convert --out . --import-style=name`
+2. Remove `@polymer/polymer/lib/utils/import-href.js` import from the output
+3. Commit the changes
+4. Publish to npm
+
 ## Running Tests
 
 There are no automatic tests as the functionality depends on the host the code is run on (localhost vs others) and the bundling status.
