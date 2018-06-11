@@ -1,0 +1,13 @@
+
+{
+  "files": ["vaadin-development-mode-detector.js"],
+  "from": [
+    "// magi: return import.meta;"
+  ],
+  "to": [
+    "return import.meta;"
+  ],
+  "remove": [
+    "magi-p3-post.json"
+  ]
+}
