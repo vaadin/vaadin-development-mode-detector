@@ -32,20 +32,17 @@
     return htmlImports;
   }
 
-  const CHECK_UNBUNDLED_MIN_LENGTH = 121;
-
-  function checkUnbundled() {
-    // The string length of this function is
-    // used for detetcting whether the app is bundled
-  }
-
   function isUnbundled() {
     if (useHtmlImports) {
       // If the app is bundled, then polymer.html should be included in some bundle and not in `polymer/polymer.html`
       const htmlImports = getHtmlImports(document, []);
       return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
     } else {
-      return checkUnbundled.toString().length >= CHECK_UNBUNDLED_MIN_LENGTH;
+      const scripts = Array.from(document.querySelectorAll("script"));
+      // TODO(web-padawan): this is not expected to work for applications using native ES modules,
+      // since the index.html is unlikely to contain any direct imports of Vaadin components.
+      // It works with the AMD transform of CLI, as the <script> tags are being added to <head>.
+      return scripts.filter(script => script.src.indexOf("@vaadin") > -1).length > 0;
     }
   }
 
