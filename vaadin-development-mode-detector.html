@@ -1,4 +1,6 @@
+<!-- MAGI REMOVE START -->
 <link rel="import" href="../polymer/lib/utils/import-href.html">
+<!-- MAGI REMOVE END -->
 <link rel="import" href="../polymer/lib/elements/dom-module.html">
 
 <dom-module id="vaadin-development-mode-probe">
@@ -95,9 +97,11 @@
 
     const importAndRun = function(id, optionalArgument) {
       let path = prepareHtmlPath(id);
+      /* MAGI REMOVE START */
       return Polymer.importHref(path, function() {
         runCallback(id, optionalArgument);
       }, function() {}, true);
+      /* MAGI REMOVE END */
     }
 
     const loadAndRun = function(id, optionalArgument) {
