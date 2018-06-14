@@ -2,12 +2,9 @@
 {
   "files": ["vaadin-development-mode-detector.js"],
   "from": [
-    "// magi: return import.meta;"
+    "// magi: import('./vaadin-development-mode-detector.js'); // Enable dynamic imports"
   ],
   "to": [
-    "return import.meta;"
-  ],
-  "remove": [
-    "magi-p3-post.json"
+    "import('./vaadin-development-mode-detector.js'); // Enable dynamic imports"
   ]
 }

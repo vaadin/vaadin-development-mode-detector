@@ -34,10 +34,7 @@
       }
 
       class DevelopmentModeDetector extends Polymer.Element {
-        static get importMeta() {
-          // magi: return import.meta;
-        }
-
+        
         __checkUnbundled() {// The string length of this function is used for detecting whether the app is bundled
           // NOTE: above comment is intentional, see https://github.com/Polymer/tools/issues/389
         }
@@ -90,7 +87,7 @@
         }
 
         importAndRun(id, optionalArgument) {
-          let path = this.importPath + "../" + id + "/" + id + ".html";
+          let path = "../" + id + "/" + id + ".html";
           /* MAGI REMOVE START */
           return Polymer.importHref(path, () => {
             this._runCallback(id, optionalArgument);
@@ -99,38 +96,27 @@
         }
 
         loadAndRun(id, optionalArgument) {
-          const scope = '@vaadin';
-          let path = this.importPath.slice(0, this.importPath.indexOf(scope) + scope.length) + "/" + id + "/" + id + ".js";
-
-          let script = document.body.querySelector("script[src='" + path + "'][async]");
-
-          if (!script) {
-            script = document.createElement("script");
-            script.setAttribute("src", path);
-            script.async = true;
-
-            script.onreadystatechange = script.onload = () => {
-              script.__dynamicImportLoaded = true;
-              this._runCallback(id, optionalArgument);
+          // magi: import('./vaadin-development-mode-detector.js'); // Enable dynamic imports
+          const resolve = () => this._runCallback(id, optionalArgument);
+          const path = `../${id}/${id}.js`;
+          try {
+            eval(`
+              import('${path}')
+                .then(resolve)
+            `);
+          } catch(e) {
+            try {
+              eval(`
+                if (_require && _require.default) {
+                  _require.default(['${path}'], resolve);
+                }
+              `)
+            } catch(e2) {
+              // Couldn't load the script, ignore
             }
-
-            script.onerror = () => {
-              // In case of an error, remove the script from the document so that it
-              // will be automatically created again the next time
-              if (script.parentNode) {
-                script.parentNode.removeChild(script);
-              }
-            }
-          }
-
-          if (script.parentNode == null) {
-            document.body.appendChild(script);
-            // if the script already loaded, dispatch a fake load event
-            // so that listeners are called and get a proper event argument.
-          } else if (script.__dynamicImportLoaded) {
-            script.dispatchEvent(new Event('load'));
           }
         }
+
       }
 
       customElements.define(DevelopmentModeDetector.is, DevelopmentModeDetector);
