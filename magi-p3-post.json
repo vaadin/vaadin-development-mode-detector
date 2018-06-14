@@ -1,0 +1,9 @@
+{
+  "files": ["vaadin-development-mode-detector.js"],
+  "from": [
+    "// magi: import('./vaadin-development-mode-detector.js'); // Enable dynamic imports"
+  ],
+  "to": [
+    "import('./vaadin-development-mode-detector.js'); // Enable dynamic imports"
+  ]
+}
