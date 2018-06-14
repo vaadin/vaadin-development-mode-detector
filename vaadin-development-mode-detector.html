@@ -47,7 +47,7 @@
       const htmlImports = getHtmlImports(document, []);
       return htmlImports.filter(function(href) { return endsWith(href, "polymer/polymer-element.html")}).length > 0;
     } else {
-      return checkUnbundled.toString().length >= CHECK_UNBUNDLED_MIN_LENGTH;
+      return !document.currentScript && checkUnbundled.toString().length >= CHECK_UNBUNDLED_MIN_LENGTH;
     }
   }
 
