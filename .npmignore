@@ -4,3 +4,4 @@ test
 .stylelintrc
 .travis.yml
 wct.conf.js
+vaadin-development-mode-detector-import.html

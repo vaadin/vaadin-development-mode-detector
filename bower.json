@@ -1,7 +1,11 @@
 {
   "name": "vaadin-development-mode-detector",
   "description": "Element for detecting that an application using Vaadin Elements is running in devlopment mode",
-  "main": "vaadin-development-mode-detector.html",
+  "main": [
+    "vaadin-development-mode-detector.html",
+    "vaadin-license-checker.html",
+    "vaadin-usage-statistics.html"
+  ],
   "license": "Apache2",
   "ignore": [
     "**/.*",
@@ -11,7 +15,9 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "vaadin-license-checker": "vaadin/license-checker#^2.1.0",
+    "vaadin-usage-statistics": "vaadin/vaadin-usage-statistics#^1.1.0"
   },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"

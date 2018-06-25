@@ -1,0 +1,62 @@
+<script src="vaadin-development-mode-checks.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  const CHECK_UNBUNDLED_MIN_LENGTH = 200;
+
+  function checkUnbundled() {// The string length of this function is used for detecting whether the app is bundled
+    // NOTE: above comment is intentional, see https://github.com/Polymer/tools/issues/389
+  }
+
+  window.Vaadin.developmentModeChecks.isUnbundled = () => checkUnbundled.toString().length >= CHECK_UNBUNDLED_MIN_LENGTH;
+
+  if (typeof window.Vaadin.developmentMode === 'undefined') {
+    const {isForcedDevelopmentMode, isLocalhost, isUnbundled} = window.Vaadin.developmentModeChecks;
+
+    try {
+      window.Vaadin.developmentMode = isForcedDevelopmentMode() || (isLocalhost() && isUnbundled());
+    } catch (e) {
+      // Some error in this code, assume production so no further actions will be taken
+      window.Vaadin.developmentMode = false;
+    }
+
+    const runCallback = (id, optionalArgument) => {
+      if (window.Vaadin && window.Vaadin.developmentModeCallback) {
+        const callback = window.Vaadin.developmentModeCallback[id];
+        if (callback) {
+          callback(optionalArgument);
+        }
+      }
+    };
+
+    const loadAndRun = (id, optionalArgument) => {
+      const resolve = () => runCallback(id, optionalArgument);
+      try {
+        switch (id) {
+          case 'vaadin-usage-statistics':
+            // import(/* webpackChunkName: "vaadin-usage-statistics" */ './vaadin-usage-statistics.js').then(resolve);
+            break;
+          case 'vaadin-license-checker':
+            // import(/* webpackChunkName: "vaadin-license-checker" */ './vaadin-license-checker.js').then(resolve);
+            break;
+        }
+      } catch (e) {
+        // Couldn't load the script, ignore
+      }
+    };
+
+    window.Vaadin.runIfDevelopmentMode = function(id, optionalArgument) {
+      // Imports a JS file named "id".js and triggers a callback
+      // defined in window.Vaadin.developmentModeCallback (if present)
+      // with the given (optional) argument
+      if (!window.Vaadin.developmentMode) {
+        return;
+      }
+
+      loadAndRun(id, optionalArgument);
+    };
+  }
+})();
+</script>

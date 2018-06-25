@@ -1,0 +1,16 @@
+{
+  "files": [
+    "package.json",
+    "vaadin-development-mode-detector-module.js"
+  ],
+  "from": [
+    "\"dependencies\": {\n    \"@polymer/polymer\": \"^3.0.0\",",
+    "// import(/* webpackChunkName: \"vaadin-usage-statistics\" */ './vaadin-usage-statistics.js').then(resolve);",
+    "// import(/* webpackChunkName: \"vaadin-license-checker\" */ './vaadin-license-checker.js').then(resolve);"
+  ],
+  "to": [
+    "\"dependencies\": {",
+    "import(/* webpackChunkName: \"vaadin-usage-statistics\" */ './vaadin-usage-statistics.js').then(resolve);",
+    "import(/* webpackChunkName: \"vaadin-license-checker\" */ './vaadin-license-checker.js').then(resolve);"
+  ]
+}
