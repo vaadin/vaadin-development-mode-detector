@@ -66,6 +66,10 @@
    */
   window.Vaadin = window.Vaadin || {};
 
+  // A guard against polymer-modulizer removing the window.Vaadin
+  // initialization above.
+  window['Vaadin'] = window['Vaadin'] || {};
+
   /**
    * Inspects the source code of the given `callback` function for
    * specially-marked _commented_ code. If such commented code is found in the
