@@ -1,6 +1,9 @@
 bower_components
+build
 test
 .eslintrc.json
 .stylelintrc
 .travis.yml
 wct.conf.js
+.vscode
+yarn.lock
