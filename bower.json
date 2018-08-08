@@ -10,6 +10,7 @@
     "test",
     "tests"
   ],
+  "dependencies": {},
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   }
