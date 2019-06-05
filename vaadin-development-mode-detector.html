@@ -3,6 +3,8 @@
   const DEV_MODE_CODE_REGEXP =
     /\/\*\*\s+vaadin-dev-mode:start([\s\S]*)vaadin-dev-mode:end\s+\*\*\//i;
 
+  const FlowClients = window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.clients;
+
   function isMinified() {
     function test() {
       /** vaadin-dev-mode:start
@@ -15,7 +17,19 @@
 
   function isDevelopmentMode() {
     try {
-      return isForcedDevelopmentMode() || (isLocalhost() && !isMinified() && !isFlowProductionMode());
+      if (isForceDevelopmentMode()) {
+        return true;
+      }
+
+      if (!isLocalhost()) {
+        return false;
+      }
+
+      if (FlowClients) {
+        return !isFlowProductionMode();
+      }
+
+      return !isMinified();
     } catch (e) {
       // Some error in this code, assume production so no further actions will be taken
       return false;
@@ -31,10 +45,10 @@
   }
 
   function isFlowProductionMode() {
-    if (window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.clients) {
-      const productionModeApps = Object.keys(window.Vaadin.Flow.clients)
-      .map(key => window.Vaadin.Flow.clients[key])
-      .filter(client => client.productionMode);
+    if (FlowClients) {
+      const productionModeApps = Object.keys(FlowClients)
+        .map(key => FlowClients[key])
+        .filter(client => client.productionMode);
       if (productionModeApps.length > 0) {
         return true;
       }
