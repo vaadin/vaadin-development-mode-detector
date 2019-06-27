@@ -21,12 +21,12 @@
         return true;
       }
 
-      if (FlowClients) {
-        return !isFlowProductionMode();
-      }
-
       if (!isLocalhost()) {
         return false;
+      }
+
+      if (FlowClients) {
+        return !isFlowProductionMode();
       }
 
       return !isMinified();
