@@ -21,12 +21,12 @@
         return true;
       }
 
-      if (!isLocalhost()) {
-        return false;
-      }
-
       if (FlowClients) {
         return !isFlowProductionMode();
+      }
+
+      if (!isLocalhost()) {
+        return false;
       }
 
       return !isMinified();
