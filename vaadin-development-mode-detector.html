@@ -21,7 +21,7 @@
         return true;
       }
 
-      if (!isLocalhost()) {
+      if (!isLocalhost() && !isCloudIDE()) {
         return false;
       }
 
@@ -42,6 +42,17 @@
 
   function isLocalhost() {
     return (["localhost","127.0.0.1"].indexOf(window.location.hostname) >= 0);
+  }
+  function endsWith(haystack, needle) {
+    if (haystack.endsWith) {
+      return haystack.endsWith(needle);
+    } else {
+      return haystack.lastIndexOf(needle) === (haystack.length-needle.length);
+    }
+  }
+
+  function isCloudIDE() {
+    return endsWith(window.location.hostname,".gitpod.io");
   }
 
   function isFlowProductionMode() {
