@@ -47,7 +47,8 @@
     if (haystack.endsWith) {
       return haystack.endsWith(needle);
     } else {
-      return haystack.lastIndexOf(needle) === (haystack.length-needle.length);
+      const i = haystack.lastIndexOf(needle);
+      return i != -1 && i === (haystack.length-needle.length);
     }
   }
 
