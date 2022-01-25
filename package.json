@@ -6,9 +6,6 @@
   "author": "Vaadin Ltd",
   "license": "Apache-2.0",
   "type": "module",
-  "devDependencies": {
-    "polymer-cli": "^1.7.7"
-  },
   "scripts": {
     "start": "polymer serve -H 0.0.0.0",
     "build": "polymer build  --preset es5-bundled --entrypoint test/index.html",
