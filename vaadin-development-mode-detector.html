@@ -1,7 +1,7 @@
 <script>
 (function() {
   const DEV_MODE_CODE_REGEXP =
-    /\/\*\*\s+vaadin-dev-mode:start([\s\S]*)vaadin-dev-mode:end\s+\*\*\//i;
+    /\/\*(?:!?)\*\s+vaadin-dev-mode:start([\s\S]*)vaadin-dev-mode:end\s+\*\*\//i;
 
   const FlowClients = window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.clients;
 
